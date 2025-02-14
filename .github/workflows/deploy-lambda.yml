@@ -19,10 +19,11 @@ jobs:
           node-version: 18 # Change based on your Lambda runtime
 
       - name: Install Dependencies
-        run: npm install --omit=dev
+        run: npm ci --omit=dev # `npm ci` is faster and more reliable for CI/CD
 
-      - name: Zip the Deployment Package
-        run: zip -r lambda.zip . -x  ".git/*"
+      - name: Archive Deployment Package
+        run: |
+          zip -rq lambda.zip . -x ".git/*" "node_modules/aws-sdk/*" # Quiet mode & exclude aws-sdk
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -31,7 +32,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Wait for Existing Lambda Updates (if any)
+      - name: Check Lambda Function Status
         run: |
           while true; do
             STATUS=$(aws lambda get-function-configuration --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} --query 'State' --output text)
@@ -40,7 +41,7 @@ jobs:
               break
             else
               echo "Lambda function is still updating. Waiting..."
-              sleep 10
+              sleep 5
             fi
           done
 
@@ -48,7 +49,7 @@ jobs:
         run: |
           aws lambda update-function-configuration \
             --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
-            --environment Variables="{\
+            --environment "Variables={\
               NODE_ENV=production,\
               DATABASE_URL=${{ secrets.DATABASE_URL }},\
               FIREBASE_SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }},\
@@ -58,10 +59,19 @@ jobs:
               CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}\
             }"
 
-      - name: Deploy to AWS Lambda (with retries)
+      - name: Deploy to AWS Lambda (with Exponential Backoff)
         run: |
+          RETRY_DELAY=5
           for i in {1..5}; do
-            aws lambda update-function-code \
+            if aws lambda update-function-code \
               --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
-              --zip-file fileb://lambda.zip && break || sleep 10
+              --zip-file fileb://lambda.zip; then
+              echo "Lambda function updated successfully."
+              exit 0
+            fi
+            echo "Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+            RETRY_DELAY=$((RETRY_DELAY * 2)) # Exponential backoff
           done
+          echo "Lambda deployment failed after 5 attempts."
+          exit 1
