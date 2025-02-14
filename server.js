@@ -13,6 +13,12 @@ const startServer = async () => {
   }
 };
 
+
+
+// app.listen(3000, ()=>{
+//   console.log("App running on PORT 3000",);
+// })
+
 startServer();
 
 export const handler = serverless(app);

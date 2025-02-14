@@ -3,6 +3,7 @@ import User from "../models/User.js";
 const verifyPhone = async (req, res) => {
   try {
     let { phone } = req.body;
+    console.log(phone);
     if (!phone.startsWith("+91")) {
       phone = `+91${phone}`;
     }

@@ -1,0 +1,35 @@
+service: my-express-app # Set a service name
+
+provider:
+  name: aws
+  runtime: nodejs18.x  # Change based on your Node.js version
+
+functions:
+  app:
+    handler: server.handler
+    events:
+      - http:
+          path: /
+          method: get
+      - http:
+          path: greet
+          method: get
+      - http:
+          path: auth/{proxy+}
+          method: any
+      - http:
+          path: companies/{proxy+}
+          method: any
+      - http:
+          path: managers/{proxy+}
+          method: any
+      - http:
+          path: regions/{proxy+}
+          method: any
+      - http:
+          path: employees/{proxy+}
+          method: any
+
+
+plugins:
+  - serverless-offline
