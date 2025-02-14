@@ -1,0 +1,44 @@
+name: Deploy Lambda to AWS
+
+on:
+  push:
+    branches:
+      - main # Change this to your deployment branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js (Optional)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Change this based on your Lambda runtime
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Zip the Deployment Package
+        run: zip -r lambda.zip . -x "node_modules/*" ".git/*"
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Update Lambda Environment Variables
+        run: |
+          aws lambda update-function-configuration \
+            --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+            --environment "Variables={NODE_ENV=production,DATABASE_URL=${{ secrets.DATABASE_URL }},FIREBASE_SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }},FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }},CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }},CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }},CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}}"
+
+      - name: Deploy to AWS Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+            --zip-file fileb://lambda.zip
