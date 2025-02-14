@@ -2,7 +2,7 @@ service: my-express-app # Set a service name
 
 provider:
   name: aws
-  runtime: nodejs18.x  # Change based on your Node.js version
+  runtime: nodejs20.x  # Change based on your Node.js version
 
 functions:
   app:
