@@ -1,4 +1,5 @@
 import express from 'express';
+
 const app = express();
 import cors from 'cors'
 import companyRoutes from './routes/companyRoutes.js';
@@ -25,9 +26,7 @@ app.use(
     })
   );
 
-app.get("/",  async(req,res)=>{
-    res.send("Hello from genoviq analysis!")
-})
+  app.get("/", (req, res) => res.json({ message: "Hello from Lambda-Express @Genoviq!" }));
 
 app.post("/uploadimage", upload.single("image"), async (req, res) => {
   try {

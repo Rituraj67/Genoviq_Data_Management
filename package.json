@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "aws-serverless-express": "^3.4.0",
     "axios": "^1.7.9",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
