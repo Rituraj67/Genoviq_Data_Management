@@ -14,7 +14,6 @@ import dotenv from "dotenv";
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
 
 app.use(
   cors({
