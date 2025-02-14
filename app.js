@@ -18,13 +18,7 @@ import {  uploadToCloudinary } from './config/cloudinary.js';
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser())
-app.use(
-    cors({
-      origin: "http://localhost:5173", // Explicitly allow frontend URL
-      credentials: true, // Allow sending cookies
-      methods: "GET,POST,PUT,DELETE", // Allow these methods
-    })
-  );
+app.use(cors());
 
   app.get("/", (req, res) => res.json({ message: "Hello from Lambda-Express @Genoviq!" }));
 
