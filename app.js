@@ -27,6 +27,9 @@ app.use(
 app.get("/", (req, res) =>
   res.json({ message: "Hello from Lambda-Express @Genoviq!" })
 );
+app.get("/greet", (req, res) =>
+  res.json({ message: "Hello from Lambda-Express @Genoviq!" })
+);
 
 
 
