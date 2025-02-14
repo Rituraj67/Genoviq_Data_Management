@@ -5,7 +5,7 @@ import serverless from 'serverless-http';
 const startServer = async () => {
   await initModels();
   await syncDatabase();
-};
+}
 
 startServer();
 
