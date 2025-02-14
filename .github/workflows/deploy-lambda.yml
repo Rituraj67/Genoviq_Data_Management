@@ -22,7 +22,7 @@ jobs:
         run: npm install --omit=dev
 
       - name: Zip the Deployment Package
-        run: zip -r lambda.zip . -x "node_modules/*" ".git/*"
+        run: zip -r lambda.zip . -x  ".git/*"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
