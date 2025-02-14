@@ -15,5 +15,4 @@ const startServer = async () => {
 
 startServer();
 
-// ✅ Export the handler properly
 export const handler = serverless(app);
