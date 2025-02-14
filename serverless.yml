@@ -1,4 +1,6 @@
-service: my-express-app # Set a service name
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: genoviqgroup
+service: Genoviq_Data_Management # Set a service name
 
 provider:
   name: aws
