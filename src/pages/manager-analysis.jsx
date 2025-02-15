@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, Title } from "@tremor/react";
-import { MapPinned, Plus } from "lucide-react";
+import { Loader2, MapPinned, Plus } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -42,7 +42,7 @@ import {
   setRegions,
 } from "../redux/companyAnalysisSlice";
 import { toast } from "react-toastify";
-import { monthMapping } from "./employee-analysis";
+import { editMonthMapping, monthMapping, NumToMonth } from "./employee-analysis";
 
 const calculateFinancials = (item) => {
   const totalExpenditure =
@@ -134,6 +134,8 @@ const ManagerAnalysis = () => {
 
   const regions = useSelector((state) => state.company_analysis.regions);
   const managers = useSelector((state) => state.company_analysis.managers);
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const getRegions = async () => {
     try {
@@ -286,6 +288,7 @@ const ManagerAnalysis = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_ADDRESS}/regions`,
@@ -320,8 +323,9 @@ const ManagerAnalysis = () => {
   const handleNewMonthlyDataSubmit = async (e) => {
     e.preventDefault();
     console.log("New monthly data:", newMonthlyData);
-
+    
     try {
+      setIsSubmitting(true)
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_ADDRESS}/managers/salary`,
         {
@@ -344,8 +348,23 @@ const ManagerAnalysis = () => {
       setIsDialogOpen(false);
     } catch (error) {
       console.log(error);
+    } finally{
+      setIsSubmitting(false)
     }
   };
+
+      const editingRow=(data)=>{
+        setManagerDialog(true)
+        const modifiedData= {
+          month: editMonthMapping[data.month],
+
+          salary: data.manager_salary,
+          expenses: data.manager_expenses,
+          year: data.year,
+        }
+        console.log(modifiedData);
+        setNewMonthlyData(modifiedData)
+      }
 
   if (!manager) return null;
 
@@ -470,14 +489,14 @@ const ManagerAnalysis = () => {
             </div>
 
             <Card className="mb-6">
-              {managerData.length > 0 && Object.keys(managerDataOverall).length > 0 &&<CompanyTable filename={`${manager.name}_${company.name}_${selectedYear}-${selectedYear+1}`} data={[...managerData, managerDataOverall]} selectedYear={selectedYear}  columns={columns} />}
+              {managerData.length > 0 && Object.keys(managerDataOverall).length > 0 &&<CompanyTable editingRow={editingRow} filename={`${manager.name}_${company.name}_${selectedYear}-${selectedYear+1}`} data={[...managerData, managerDataOverall]} selectedYear={selectedYear}  columns={columns} />}
             </Card>
 
             {/* add or update monthly data */}
             <Dialog open={managerDialog} onOpenChange={setManagerDialog}>
               <DialogTrigger asChild>
                 <Button className="w-full sm:w-auto">
-                  <Plus className="mr-2 h-4 w-4" /> Add/Update Monthly Data
+                  <Plus className="mr-2 h-4 w-4" /> Add Monthly Record
                 </Button>
               </DialogTrigger>
               <DialogContent
@@ -501,6 +520,7 @@ const ManagerAnalysis = () => {
                     <div className="space-y-2">
                       <Label htmlFor="month">Month</Label>
                       <Select
+                      value={NumToMonth[newMonthlyData.month]}
                         onValueChange={(value) =>
                           handleNewMonthlyDataChange(
                             "month",
@@ -561,9 +581,20 @@ const ManagerAnalysis = () => {
                   </div>
 
                   {/* Submit Button */}
-                  <Button type="submit" className="w-full sm:w-auto">
-                    Add/Update Manager Record
-                  </Button>
+                  <Button
+                  type="submit"
+                  className="w-full sm:w-auto bg-slate-400"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Adding...
+                    </>
+                  ) : (
+                    "Add Manager Record"
+                  )}
+                </Button>
                 </form>
               </DialogContent>
             </Dialog>

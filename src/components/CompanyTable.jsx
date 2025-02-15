@@ -14,6 +14,7 @@ export default function CompanyTable({
   columns,
   filename,
   selectedYear,
+  editingRow,
 }) {
   const [sortConfig, setSortConfig] = useState({
     key: null,
@@ -137,6 +138,19 @@ export default function CompanyTable({
                     {formatDisplayValue(column.key, row[column.key])}
                   </TableCell>
                 ))}
+                {editingRow && <TableCell className="px-4 py-2">
+                  {!row.month.includes("Total") && (
+                    <Button
+                      className="bg-green-400 hover:bg-green-300 text-white px-3 py-1 rounded"
+                      onClick={() => {
+                        editingRow(row);
+                        console.log(row);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </TableCell>}
               </TableRow>
             );
           })}

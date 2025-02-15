@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/select";
 import CompanyTable from "../components/CompanyTable";
 import { useAuth } from "../context/auth-context";
-import { generateFinancialData } from "../data/companies";
+
 import { toast } from "react-toastify";
 import ChartPopup from "../components/ChartPopup";
 import { useDispatch, useSelector } from "react-redux";
@@ -321,6 +321,30 @@ const EmployeeAnalysis = () => {
     }
   };
 
+
+
+    const editingRow=(data)=>{
+      setIsDialogOpen(true)
+      const modifiedData= {
+        month: editMonthMapping[data.month],
+        CRM: data.CRM,
+        salary: data.salary,
+        expenses: data.expenses,
+        other_expenses:data.other_expenses,
+        target: data.target,
+        profit: data.profit,
+        year: data.year,
+        sale: data.total_sale,
+        total_manufacturing_cost:data.total_manufacturing_cost,
+      }
+      console.log(modifiedData);
+      setNewMonthlyData(modifiedData)
+    }
+
+
+
+
+
   if (!employee) return <div>Loading...</div>;
 
   return (
@@ -450,6 +474,7 @@ const EmployeeAnalysis = () => {
                   data={[...employeeData, employeeDataOverall]}
                   selectedYear={selectedYear}
                   columns={columns}
+                  editingRow={editingRow}
                 />
               )}
           </Card>
@@ -457,7 +482,7 @@ const EmployeeAnalysis = () => {
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button className="w-full sm:w-auto">
-                <Plus className="mr-2 h-4 w-4" /> Add/Update Monthly Data
+                <Plus className="mr-2 h-4 w-4" /> Add Monthly Record
               </Button>
             </DialogTrigger>
             <DialogContent
@@ -478,13 +503,17 @@ const EmployeeAnalysis = () => {
                   <div className="space-y-2">
                     <Label htmlFor="month">Month</Label>
                     <Select
-                      onValueChange={(value) =>
+                    value={NumToMonth[newMonthlyData.month]}
+                      onValueChange={(value) =>{
+                        setSelectedMonth(value)
                         handleNewMonthlyDataChange("month", monthMapping[value])
+
+                      }
                       }
                       required
                     >
                       <SelectTrigger id="month" className="w-full">
-                        <SelectValue placeholder="Select month" />
+                        <SelectValue  placeholder="Select month" />
                       </SelectTrigger>
                       <SelectContent className="bg-white">
                         {Object.entries(monthMapping).map(
@@ -608,4 +637,34 @@ export const monthMapping = {
   December: "12",
 };
 
+export const NumToMonth = {
+  "1": "January",
+  "2": "February",
+  "3": "March",
+  "4": "April",
+  "5": "May",
+  "6": "June",
+  "7": "July",
+  "8": "August",
+  "9": "September",
+  "10": "October",
+  "11": "November",
+  "12": "December",
+};
+
+
+export const editMonthMapping = {
+  "Jan": "1",
+  "Feb": "2",
+  "Mar": "3",
+  "Apr": "4",
+  "May": "5",
+  "Jun": "6",
+  "Jul": "7",
+  "Aug": "8",
+  "Sept": "9",
+  "Oct": "10",
+  "Nov": "11",
+  "Dec": "12",
+}
 export default EmployeeAnalysis;
