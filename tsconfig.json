@@ -5,14 +5,12 @@
     "strict": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "jsx": "react-jsx"
-  },
-  "include": ["src"],
-  "compilerOptions": {
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
