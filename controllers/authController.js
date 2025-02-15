@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-
+const isProduction = process.env.NODE_ENV === "production";
 const verifyPhone = async (req, res) => {
   try {
     let { phone } = req.body;
@@ -38,14 +38,14 @@ const sendCred = async (req, res) => {
     res.cookie("idToken", idToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Secure in production
-      sameSite: "None",
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 60 * 60 * 1000, // 1 hour
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -71,13 +71,13 @@ const logout= async(req,res)=>{
   res.clearCookie("idToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    sameSite: isProduction ? "None" : "Lax",
   });
 
   res.clearCookie("refreshToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    sameSite: isProduction ? "None" : "Lax",
   });
 
   res.status(200).json({ message: "Logged out successfully" });

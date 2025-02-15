@@ -47,11 +47,16 @@ const initModels = async () => {
 // ✅ Sync Database only when explicitly called
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true });
-    console.log('✅ Database & tables synced successfully!');
+    if (process.env.NODE_ENV !== "production") {
+      await sequelize.sync({ alter: true }); // Only in development
+      console.log("✅ Database & tables synced successfully!");
+    } else {
+      console.log("⚠️ Skipping database sync in production. Use migrations instead.");
+    }
   } catch (error) {
-    console.error('❌ Database sync failed:', error);
+    console.error("❌ Database sync failed:", error);
   }
 };
+
 
 export { initModels, syncDatabase };

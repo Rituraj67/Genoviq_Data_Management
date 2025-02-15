@@ -2,7 +2,7 @@ import admin from "../config/firebaseAdmin.js";
 import axios from "axios";
 
 const FIREBASE_REFRESH_URL = `https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`;
-
+const isProduction = process.env.NODE_ENV === "production";
 // Middleware to verify ID token & refresh if expired
 const verifyFirebaseToken = async (req, res, next) => {
   try {
@@ -41,7 +41,7 @@ const verifyFirebaseToken = async (req, res, next) => {
           res.cookie("idToken", newIdToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "None",
+            sameSite: isProduction ? "None" : "Lax",
             maxAge: 60 * 60 * 1000, // 1 hour
           });
           // Verify and attach new token to request
