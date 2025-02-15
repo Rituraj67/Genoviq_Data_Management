@@ -23,7 +23,7 @@ function App() {
   useEffect(() => {
     if (!isAuthenticated)
       verifyToken();  
-  }, [isAuthenticated]);
+  }, [isAuthenticated])
 
   useEffect(() => {
     window.scrollTo(0, 0);
