@@ -8,14 +8,13 @@ const verifyFirebaseToken = async (req, res, next) => {
   try {
     const idToken = req.cookies.idToken;
     const refreshToken = req.cookies.refreshToken;
-    console.log(idToken, refreshToken);
+
     // if (!idToken) {
     //   return res.status(401).json({ error: "Unauthorized: No token provided" });
     // }
 
     try {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
-      console.log(decodedToken);
       req.user = decodedToken;
       return next();
     } catch (error) {
@@ -28,17 +27,21 @@ const verifyFirebaseToken = async (req, res, next) => {
               grant_type: "refresh_token",
               refresh_token: refreshToken,
             },
-            
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
 
-          console.log(response);
+          console.log(response.data);
 
           const newIdToken = response.data.id_token;
 
           res.cookie("idToken", newIdToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "Strict",
+            sameSite: "None",
             maxAge: 60 * 60 * 1000, // 1 hour
           });
           // Verify and attach new token to request

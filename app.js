@@ -11,6 +11,7 @@ import authRouter from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import punycode from "punycode";
+
 global.punycode = punycode;
 
 
@@ -20,20 +21,33 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Vite app
-    credentials: true, // 🔥 Allow cookies & authentication headers
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // 🔥 Include OPTIONS for preflight
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
+    origin: "https://analysis.genoviqhealthcare.com",
+    credentials: true, // ✅ Allow cookies
   })
 );
+
+// ✅ Middleware for CORS headers (Handles preflight)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://analysis.genoviqhealthcare.com");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 
 app.get("/", (req, res) =>
   res.json({ message: "Hello from Lambda-Express @Genoviq!" })
 );
-app.get("/greet", (req, res) =>
-  res.json({ message: "Hello from Lambda-Express @Genoviq!" })
-);
+
+
+
+
 
 app.use("/auth", authRouter);
 app.use("/companies", verifyFirebaseToken, companyRoutes);
