@@ -40,7 +40,7 @@ function App() {
         `${import.meta.env.VITE_BASE_ADDRESS}/auth/verifyToken`,
         { withCredentials: true }
       );
-      console.log(res);
+ 
       if (res.status == 202) {
         login(res.data.phone_number);
       }

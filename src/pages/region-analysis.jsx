@@ -149,7 +149,7 @@ const RegionAnalysis = () => {
         { withCredentials: true }
       );
 
-      console.log(res1, res2);
+     
 
       const updatedRegionData = res1.data.monthlyData.map((item) => ({
         ...item,
@@ -163,8 +163,6 @@ const RegionAnalysis = () => {
         ...calculateFinancials(res2.data),
       };
 
-      console.log(updatedRegionData);
-      console.log(updatedRegionDataOverall);
       
 
       setRegionData(updatedRegionData);
@@ -196,9 +194,9 @@ const RegionAnalysis = () => {
         ...calculateFinancials(item),
       };
     });
-    console.log(updatedCharData);
+    
     setChartData(updatedCharData);
-    console.log("overall data", res);
+  
   };
 
   const getAllEmployees = async () => {
@@ -207,7 +205,7 @@ const RegionAnalysis = () => {
         `${import.meta.env.VITE_BASE_ADDRESS}/employees/${regionId}`,
         { withCredentials: true }
       );
-      console.log(res);
+   
       dispatch(setEmployees(res.data));
     } catch (error) {
       console.log(error);
@@ -315,7 +313,7 @@ const RegionAnalysis = () => {
     formData.append("ggcimage", newEmployee.image);
     formData.append("regionId", regionId);
 
-    console.log("New employee data:", formData);
+    
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_ADDRESS}/employees`,
@@ -327,7 +325,7 @@ const RegionAnalysis = () => {
           },
         }
       );
-      console.log(res);
+     
       dispatch(addEmployee(res.data));
       setIsDialogOpen(false);
     } catch (error) {

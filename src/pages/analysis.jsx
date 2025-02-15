@@ -32,7 +32,7 @@ export default function Analysis() {
           withCredentials: true,
         }
       );
-      console.log(res);
+     
       dispatch(setCompanies(res.data));
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -40,7 +40,6 @@ export default function Analysis() {
   };
 
   const handleAddCompany = async (formData) => {
-    console.log(...formData);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_ADDRESS}/companies`,
@@ -52,7 +51,7 @@ export default function Analysis() {
           withCredentials: true,
         },
       );
-      console.log(res);
+     
       dispatch(addCompany(res.data))
     } catch (error) {
       console.log(error);

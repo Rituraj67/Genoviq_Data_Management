@@ -150,7 +150,7 @@ const EmployeeAnalysis = () => {
         { withCredentials: true }
       );
 
-      console.log(res1, res2);
+      
 
       const updatedEmployeeData = res1.data.monthlyData.map((item) => ({
         ...item,
@@ -164,8 +164,7 @@ const EmployeeAnalysis = () => {
         ...calculateFinancials(res2.data),
       };
 
-      console.log("updatedEmployeeData", updatedEmployeeData);
-      console.log("updatedEmployeeDataOverall", updatedEmployeeDataOverall);
+     
       setEmployeeData(updatedEmployeeData);
       setEmployeeDataOverall(updatedEmployeeDataOverall);
     } catch (error) {
@@ -187,7 +186,7 @@ const EmployeeAnalysis = () => {
         }/employees/analysis/monthwise/${employeeId}/${2022}/${4}/${2026}/${3}`,
         { withCredentials: true }
       );
-      console.log("overall data", res);
+     
 
       const updatedCharData = res.data.monthlyData.map((item) => {
         const monthName = `${months[item.month]}-${item.year}`;
@@ -198,7 +197,7 @@ const EmployeeAnalysis = () => {
           ...calculateFinancials(item),
         };
       });
-      console.log(updatedCharData);
+     
       setChartData(updatedCharData);
     } catch (error) {}
   };
@@ -286,7 +285,7 @@ const EmployeeAnalysis = () => {
   const handleNewMonthlyDataSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true); // Start loading
-    console.log("New monthly data:", newMonthlyData);
+   
 
     try {
       const res = await axios.post(
@@ -298,7 +297,7 @@ const EmployeeAnalysis = () => {
         },
         { withCredentials: true }
       );
-      console.log(res);
+  
 
       fetchEmployeeData(startMonth, startYear, endMonth, endYear);
 
@@ -337,7 +336,7 @@ const EmployeeAnalysis = () => {
         sale: data.total_sale,
         total_manufacturing_cost:data.total_manufacturing_cost,
       }
-      console.log(modifiedData);
+     
       setNewMonthlyData(modifiedData)
     }
 

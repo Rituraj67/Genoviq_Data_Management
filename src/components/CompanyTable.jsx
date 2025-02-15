@@ -144,7 +144,7 @@ export default function CompanyTable({
                       className="bg-green-400 hover:bg-green-300 text-white px-3 py-1 rounded"
                       onClick={() => {
                         editingRow(row);
-                        console.log(row);
+                      
                       }}
                     >
                       Edit

@@ -47,9 +47,9 @@ export default function Login() {
           phone,
         }
       );
-      console.log(response);
+    
       if (response.status == 200) {
-        console.log("Correct");
+       
         setPhone(response.data.phone)
       }
 
@@ -86,7 +86,7 @@ export default function Login() {
     try {
       const result = await confirmationResult.confirm(otp);
       if (result) {
-        console.log(result._tokenResponse);
+       
         await navigate("/");
         await saveCred(result._tokenResponse)
         toast.dismiss()

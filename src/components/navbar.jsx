@@ -15,7 +15,6 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleLogout = async () => {
-    console.log("logout");
     await signOut(auth);
     try {
       const res = await axios.get(

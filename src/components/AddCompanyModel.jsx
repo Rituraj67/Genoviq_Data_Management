@@ -19,7 +19,6 @@ export default function AddCompanyModal({ isOpen, onClose, onAddCompany }) {
     const formdata= new FormData();
     formdata.append("name", companyName);
     formdata.append("ggcimage", companyLogo)
-    console.log(...formdata);
     onAddCompany(formdata)
     setCompanyName("")
     setCompanyLogo(null)

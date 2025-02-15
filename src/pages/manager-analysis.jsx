@@ -143,7 +143,7 @@ const ManagerAnalysis = () => {
         `${import.meta.env.VITE_BASE_ADDRESS}/regions/${managerId}`,
         { withCredentials: true }
       );
-      console.log("regions", res);
+    
       dispatch(setRegions(res.data));
     } catch (error) {}
   };
@@ -163,7 +163,7 @@ const ManagerAnalysis = () => {
         { withCredentials: true }
       );
 
-      console.log(res1, res2);
+     
 
       const updatedManagerData = res1.data.monthlyData.map((item) => ({
         ...item,
@@ -177,8 +177,7 @@ const ManagerAnalysis = () => {
         ...calculateFinancials(res2.data),
       };
 
-      console.log(updatedManagerData);
-      console.log(updatedManagerDataOverall);
+  
 
 
       setManagerData(updatedManagerData);
@@ -265,9 +264,9 @@ const ManagerAnalysis = () => {
           ...calculateFinancials(item),
         };
       });
-      console.log(updatedCharData);
+     
       setChartData(updatedCharData);
-      console.log("overall data", res);
+     
     } catch (error) {
       console.log(error);
     }
@@ -300,7 +299,7 @@ const ManagerAnalysis = () => {
           withCredentials: true,
         }
       );
-      console.log(res);
+      
       dispatch(addRegion(res.data));
       setIsDialogOpen(false);
     } catch (error) {
@@ -322,7 +321,7 @@ const ManagerAnalysis = () => {
 
   const handleNewMonthlyDataSubmit = async (e) => {
     e.preventDefault();
-    console.log("New monthly data:", newMonthlyData);
+    
     
     try {
       setIsSubmitting(true)
@@ -334,7 +333,7 @@ const ManagerAnalysis = () => {
         },
         { withCredentials: true }
       );
-      console.log(res);
+
       setManagerDialog(false);
 
       fetchManagerData(startMonth, startYear, endMonth, endYear);
@@ -362,7 +361,7 @@ const ManagerAnalysis = () => {
           expenses: data.manager_expenses,
           year: data.year,
         }
-        console.log(modifiedData);
+        
         setNewMonthlyData(modifiedData)
       }
 

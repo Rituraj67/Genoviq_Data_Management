@@ -173,7 +173,7 @@ export default function CompanyAnalysis() {
         }/companies/analysis/overall/${companyId}/${startYear}/${startMonth}/${endYear}/${endMonth}`,
         { withCredentials: true }
       );
-      console.log(res1, res2);
+ 
 
       const updatedCompanyData = res1.data.monthlyData.map((item) => ({
         ...item,
@@ -181,14 +181,14 @@ export default function CompanyAnalysis() {
         ...calculateFinancials(item), // Adds totalExpenditure, profit, and profitPercentage
       }));
 
-      console.log(updatedCompanyData);
+  
 
       const updatedCompanyDataOverall = {
         month: "Total",
         ...res2.data,
         ...calculateFinancials(res2.data),
       };
-      console.log(updatedCompanyDataOverall);
+      
      
       
 
@@ -210,7 +210,7 @@ export default function CompanyAnalysis() {
         `${import.meta.env.VITE_BASE_ADDRESS}/managers/${companyId}`,
         { withCredentials: true }
       );
-      console.log("managers", res);
+     
       dispatch(setManagers(res.data));
     } catch (error) {
       console.log(error);
@@ -287,9 +287,9 @@ export default function CompanyAnalysis() {
         ...calculateFinancials(item),
       };
     });
-    console.log(updatedCharData);
+    
     setChartData(updatedCharData);
-    console.log("overall data", res);
+  
   };
 
   const handleImageUpload = (e) => {
@@ -315,7 +315,7 @@ export default function CompanyAnalysis() {
     formData.append("name", newManager.name);
     formData.append("ggcimage", newManager.image);
     formData.append("companyId", companyId);
-    console.log("New manager:", formData);
+    
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_ADDRESS}/managers`,
@@ -327,7 +327,7 @@ export default function CompanyAnalysis() {
           },
         }
       );
-      console.log(res);
+    
       dispatch(addManager(res.data));
       setIsDialogOpen(false);
     } catch (error) {
