@@ -5,12 +5,12 @@ import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCdEwTtX2sdpbmLg0kOzU3qAIPGHvay1Fw",
-  authDomain: "genoviqhealthcare-3a7eb.firebaseapp.com",
-  projectId: "genoviqhealthcare-3a7eb",
+  apiKey: import.meta.env.VITE_FB_API_KEY,
+  authDomain: import.meta.env.VITE_FB_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FB_PROJECT_ID,
   storageBucket: "genoviqhealthcare-3a7eb.firebasestorage.app",
-  messagingSenderId: "15593650574",
-  appId: "1:15593650574:web:8b16e4a2757acc27790cdf",
+  messagingSenderId: import.meta.env.VITE_FB_SENDER_ID,
+  appId: import.meta.env.VITE_FB_APP_ID,
   measurementId: "G-H12E00G7DT"
 };
 
