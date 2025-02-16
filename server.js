@@ -31,7 +31,7 @@ export const handler = async (event, context) => {
     ...event,
     headers: {
       ...event.headers,
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "https://analysis.genoviqhealthcare.com/",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
       "Access-Control-Allow-Credentials": "true",
