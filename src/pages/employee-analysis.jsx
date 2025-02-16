@@ -504,7 +504,6 @@ const EmployeeAnalysis = () => {
                     <Select
                     value={NumToMonth[newMonthlyData.month]}
                       onValueChange={(value) =>{
-                        setSelectedMonth(value)
                         handleNewMonthlyDataChange("month", monthMapping[value])
 
                       }
