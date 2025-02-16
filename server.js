@@ -17,11 +17,11 @@ const startServer = async () => {
 startServer();
 
 // ✅ Local Development Mode
-if (process.env.NODE_ENV !== "production") {
+
   app.listen(3000, () => {
     console.log("🚀 App running locally on PORT 3000");
   });
-}
+
 
 // ✅ AWS Lambda Handler (Handles API Gateway Requests)
 export const handler = async (event, context) => {
